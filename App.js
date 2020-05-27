@@ -1,17 +1,18 @@
-//import liraries
+import 'react-native-gesture-handler';
 import React, {Component} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
 
-// create a component
-const App = () => {
+const App = (props) => {
   return (
-    <View style={styles.container}>
-      <Text>This is App Component</Text>
-    </View>
+    <NavigationContainer>
+      <View style={styles.container}>
+        <Text>This is App Component</Text>
+      </View>
+    </NavigationContainer>
   );
 };
 
-// define your styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -20,5 +21,4 @@ const styles = StyleSheet.create({
   },
 });
 
-//make this component available to the app
 export default App;
