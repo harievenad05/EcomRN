@@ -4,6 +4,7 @@ import CartItem from '../../models/cart-item';
 const initialState = {
   items: {},
   totalAmount: 0,
+  count: 0,
 };
 
 export default (state = initialState, action) => {
@@ -28,6 +29,7 @@ export default (state = initialState, action) => {
         ...state, //redundant
         items: {...state.items, [addedProduct.id]: cartItem},
         totalAmount: state.totalAmount + productPrice,
+        count: state.count + 1,
       };
 
     default:
