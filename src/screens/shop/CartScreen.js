@@ -8,10 +8,11 @@ import {
   ScrollView,
   Dimensions,
 } from 'react-native';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import Colors from '../../constants/Colors';
 import CartItems from '../../components/shop/CartItems';
 import Helpers from '../../common/helpers/Helpers';
+import * as cartActions from '../../store/actions/cart';
 
 const CartScreen = (props) => {
   const cartAmount = useSelector((state) => state.cart.totalAmount);
@@ -31,7 +32,10 @@ const CartScreen = (props) => {
   });
   const height = Dimensions.get('window').height;
 
+  const dispatch = useDispatch();
+
   const rederedItemData = ({item}) => {
+    console.log(item);
     let customizedTitle = Helpers.maxTextLength(item.productTitle, 9);
     return (
       <CartItems
@@ -39,7 +43,9 @@ const CartScreen = (props) => {
         title={customizedTitle}
         amount={item.sum}
         imageURL={item.productImage}
-        removeItemAction={() => console.log(customizedTitle)}
+        removeItemAction={() =>
+          dispatch(cartActions.removeFromCart(item.productId))
+        }
         cartItemNavAction={() =>
           props.navigation.navigate('ProductsDetail', {
             productId: item.productId,
