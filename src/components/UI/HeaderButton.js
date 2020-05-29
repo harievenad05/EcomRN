@@ -1,12 +1,14 @@
 import React from 'react';
 import {IconButton} from 'react-native-paper';
 import Colors from '../../constants/Colors';
-import {Platform, View, Text} from 'react-native';
+import {Platform, View, Text, TouchableOpacity} from 'react-native';
 
 const HeaderRightBtn = (props) => {
   return (
-    <View style={{flexDirection: 'row', marginRight: 10}}>
-      <View>
+    <TouchableOpacity
+      style={{flexDirection: 'row', marginRight: 10}}
+      onPress={props.menuBtnClickAction}>
+      <View style={{position: 'relative'}}>
         <IconButton
           icon={props.iconName}
           color={Platform.OS === 'android' ? 'white' : Colors.primaryColor}
@@ -30,7 +32,7 @@ const HeaderRightBtn = (props) => {
           </Text>
         </View>
       ) : null}
-    </View>
+    </TouchableOpacity>
   );
 };
 
