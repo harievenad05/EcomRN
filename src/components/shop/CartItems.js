@@ -12,7 +12,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const CartItems = (props) => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={props.cartItemNavAction}>
       <Image style={styles.imgStyle} source={{uri: props.imageURL}} />
       <View style={styles.itemDataContainer}>
         <Text style={styles.qtyTxt}>{props.quantity}</Text>
@@ -33,7 +35,7 @@ const CartItems = (props) => {
           />
         </TouchableOpacity>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

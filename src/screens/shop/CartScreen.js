@@ -40,6 +40,12 @@ const CartScreen = (props) => {
         amount={item.sum}
         imageURL={item.productImage}
         removeItemAction={() => console.log(customizedTitle)}
+        cartItemNavAction={() =>
+          props.navigation.navigate('ProductsDetail', {
+            productId: item.productId,
+            title: item.productTitle,
+          })
+        }
       />
     );
   };
