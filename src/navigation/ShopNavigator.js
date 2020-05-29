@@ -4,6 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createDrawerNavigator, DrawerItem} from '@react-navigation/drawer';
 import ProductsOverviewScreen from '../screens/shop/ProductsOverviewScreen';
 import Colors from '../constants/Colors';
+import ProductDetailScreen from '../screens/shop/ProductDetailScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -22,6 +23,14 @@ const ProductsNavigator = (props) => {
       <Stack.Screen
         name="ProductsOverview"
         component={ProductsOverviewScreen}
+      />
+      <Stack.Screen
+        name="ProductsDetail"
+        component={ProductDetailScreen}
+        options={({route}) => ({
+          title: route.params.title,
+          headerBackTitleVisible: false,
+        })}
       />
     </Stack.Navigator>
   );
