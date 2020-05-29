@@ -7,6 +7,7 @@ import Colors from '../constants/Colors';
 import ProductDetailScreen from '../screens/shop/ProductDetailScreen';
 import HeaderRightBtn from '../components/UI/HeaderButton';
 import {useSelector} from 'react-redux';
+import CartScreen from '../screens/shop/CartScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -23,7 +24,7 @@ const ProductsNavigator = (props) => {
   const cartItems = useSelector((state) => state.cart);
   let cartQty = cartItems.count;
 
-  const cartBtnBadge = () => {
+  const cartBtnBadge = (navigation) => {
     let cartStatus;
     cartQty > 0 ? (cartStatus = true) : (cartStatus = false);
     return (
@@ -31,7 +32,7 @@ const ProductsNavigator = (props) => {
         iconName={'cart'}
         cartStatus={cartStatus}
         count={cartQty}
-        menuBtnClickAction={() => console.log('Cart is working')}
+        menuBtnClickAction={() => navigation.navigate('CartScreen')}
       />
     );
   };
@@ -41,20 +42,21 @@ const ProductsNavigator = (props) => {
       <Stack.Screen
         name="ProductsOverview"
         component={ProductsOverviewScreen}
-        options={({route}) => ({
+        options={({route, navigation}) => ({
           headerBackTitleVisible: false,
-          headerRight: cartBtnBadge,
+          headerRight: () => cartBtnBadge(navigation),
         })}
       />
       <Stack.Screen
         name="ProductsDetail"
         component={ProductDetailScreen}
-        options={({route}) => ({
+        options={({route, navigation}) => ({
           title: route.params.title,
           headerBackTitleVisible: false,
-          headerRight: cartBtnBadge,
+          headerRight: () => cartBtnBadge(navigation),
         })}
       />
+      <Stack.Screen name="CartScreen" component={CartScreen} />
     </Stack.Navigator>
   );
 };

@@ -13,6 +13,7 @@ export default (state = initialState, action) => {
       const addedProduct = action.product;
       const productPrice = addedProduct.price;
       const productTitle = addedProduct.title;
+      const productImage = addedProduct.imageUrl;
       let cartItem;
       if (state.items[addedProduct.id]) {
         //already have that item
@@ -20,11 +21,19 @@ export default (state = initialState, action) => {
           state.items[addedProduct.id].quantity + 1,
           productPrice,
           productTitle,
+          productImage,
           state.items[addedProduct.id].sum + productPrice,
         );
       } else {
-        cartItem = new CartItem(1, productPrice, productTitle, productPrice);
+        cartItem = new CartItem(
+          1,
+          productPrice,
+          productTitle,
+          productImage,
+          productPrice,
+        );
       }
+
       return {
         ...state, //redundant
         items: {...state.items, [addedProduct.id]: cartItem},
