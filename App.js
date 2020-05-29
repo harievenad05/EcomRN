@@ -4,12 +4,16 @@ import {StyleSheet, StatusBar, Platform} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStore, combineReducers} from 'redux';
 import {Provider} from 'react-redux';
+import {composeWithDevTools} from 'redux-devtools-extension';
+
 import productsReducer from './src/store/reducers/products';
+import cartReducer from './src/store/reducers/cart';
 import ProductsNavigator from './src/navigation/ShopNavigator';
 import Colors from './src/constants/Colors';
 
 const rootReducer = combineReducers({
   products: productsReducer,
+  cart: cartReducer,
 });
 
 const store = createStore(rootReducer);

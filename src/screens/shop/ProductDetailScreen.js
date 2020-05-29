@@ -1,9 +1,21 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, ScrollView, Button, Image} from 'react-native';
-import {useSelector} from 'react-redux';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Button,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
+import Colors from '../../constants/Colors';
+import * as cartAction from '../../store/actions/cart';
 
 const ProductDetailScreen = ({route, navigation}) => {
   const {productId} = route.params;
+
+  const dispatch = useDispatch();
 
   const availableProducts = useSelector((state) =>
     state.products.availableProducts.find((prod) => prod.id == productId),
@@ -18,10 +30,29 @@ const ProductDetailScreen = ({route, navigation}) => {
             source={{uri: availableProducts.imageUrl}}
           />
         </View>
-        <Button title="Add to Cart" onPress={() => {}} />
-        <Text style={styles.priceStyle}>
-          ${availableProducts.price.toFixed(2)}
-        </Text>
+
+        <View style={styles.btnContainer}>
+          <TouchableOpacity
+            style={styles.cartActionBtnStyle}
+            color={Colors.primaryColor}
+            onPress={() => {
+              dispatch(cartAction.addToCart(availableProducts));
+            }}>
+            <Text style={styles.cartActionsText}>Add to cart</Text>
+          </TouchableOpacity>
+          <View style={{width: 2}}></View>
+          <TouchableOpacity
+            style={styles.cartActionBtnStyle}
+            color={Colors.primaryColor}
+            onPress={() => {}}>
+            <Text style={styles.cartActionsText}>Buy Now</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.priceTextContainer}>
+          <Text style={styles.priceStyle}>
+            ${availableProducts.price.toFixed(2)}
+          </Text>
+        </View>
         <View style={styles.desContainer}>
           <Text style={styles.descriptionStyle}>
             {availableProducts.description}
@@ -37,7 +68,39 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 10,
+  },
+  btnContainer: {
+    width: '100%',
+    height: 50,
+    flexDirection: 'row',
+    marginVertical: 10,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  priceTextContainer: {
+    width: '100%',
+    height: 35,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    paddingLeft: 10,
+    paddingRight: 10,
+    marginVertical: 5,
+  },
+  cartActionsText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: Colors.primaryColor,
+  },
+  cartActionBtnStyle: {
+    flex: 1,
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 4,
   },
   imgContainer: {
     width: '98%',
@@ -50,15 +113,16 @@ const styles = StyleSheet.create({
   },
   priceStyle: {
     fontSize: 18,
+    fontWeight: 'bold',
     color: '#888',
     textAlign: 'center',
-    marginVertical: 20,
+    // marginTop: 10,
   },
   desContainer: {
     width: '95%',
   },
   descriptionStyle: {
-    fontSize: 14,
+    fontSize: 15,
   },
 });
 
