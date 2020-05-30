@@ -13,6 +13,7 @@ import Colors from '../../constants/Colors';
 import CartItems from '../../components/shop/CartItems';
 import Helpers from '../../common/helpers/Helpers';
 import * as cartActions from '../../store/actions/cart';
+import * as ordersActions from '../../store/actions/orders';
 
 const CartScreen = (props) => {
   const cartAmount = useSelector((state) => state.cart.totalAmount);
@@ -28,7 +29,7 @@ const CartScreen = (props) => {
         sum: state.cart.items[key].sum,
       });
     }
-    return tranformedItems;
+    return tranformedItems.sort((a, b) => (a.productId > b.productId ? 1 : -1));
   });
   const height = Dimensions.get('window').height;
 
@@ -71,7 +72,11 @@ const CartScreen = (props) => {
             <Text style={styles.amountTxt}>${cartAmount.toFixed(2)}</Text>
           </View>
           {cartItems.length !== 0 ? (
-            <TouchableOpacity style={styles.orderNowBtnStyle}>
+            <TouchableOpacity
+              style={styles.orderNowBtnStyle}
+              onPress={() => {
+                dispatch(ordersActions.addOrder(cartItems, cartAmount));
+              }}>
               <Text style={styles.orderNowBtnTxt}>Order Now</Text>
             </TouchableOpacity>
           ) : (

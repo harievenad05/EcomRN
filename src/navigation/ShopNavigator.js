@@ -8,6 +8,8 @@ import ProductDetailScreen from '../screens/shop/ProductDetailScreen';
 import HeaderRightBtn from '../components/UI/HeaderButton';
 import {useSelector} from 'react-redux';
 import CartScreen from '../screens/shop/CartScreen';
+import OrderScreen from '../screens/shop/OrdersScreen';
+import MenuBtn from '../components/UI/MenuBtn';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -43,7 +45,15 @@ const ProductsNavigator = (props) => {
         name="ProductsOverview"
         component={ProductsOverviewScreen}
         options={({route, navigation}) => ({
+          title: 'Products',
           headerBackTitleVisible: false,
+          headerLeft: () => (
+            <MenuBtn
+              menuClick={() => {
+                navigation.toggleDrawer();
+              }}
+            />
+          ),
           headerRight: () => cartBtnBadge(navigation),
         })}
       />
@@ -56,9 +66,64 @@ const ProductsNavigator = (props) => {
           headerRight: () => cartBtnBadge(navigation),
         })}
       />
-      <Stack.Screen name="CartScreen" component={CartScreen} />
+      <Stack.Screen
+        name="CartScreen"
+        component={CartScreen}
+        options={({route, navigation}) => ({
+          title: 'Cart',
+          headerBackTitleVisible: false,
+        })}
+      />
     </Stack.Navigator>
   );
 };
 
-export default ProductsNavigator;
+const ordersStackNav = (props) => {
+  return (
+    <Stack.Navigator screenOptions={defaultStackNavOptions}>
+      <Stack.Screen
+        name="OrdersScreen"
+        component={OrderScreen}
+        options={({route, navigation}) => ({
+          title: 'Orders',
+          headerLeft: () => (
+            <MenuBtn
+              menuClick={() => {
+                navigation.toggleDrawer();
+              }}
+            />
+          ),
+        })}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const defaultDrawerNavOptions = {
+  activeTintColor: Colors.primaryColor,
+  // itemStyle: {marginTop: 10},
+  labelStyle: {fontSize: 14, fontWeight: 'bold'},
+};
+
+const ShopDrawerNav = (props) => {
+  return (
+    <Drawer.Navigator drawerContentOptions={defaultDrawerNavOptions}>
+      <Drawer.Screen
+        name="ProductsStack"
+        component={ProductsNavigator}
+        options={({route}) => ({
+          title: 'Products',
+        })}
+      />
+      <Drawer.Screen
+        name="OrderStack"
+        component={ordersStackNav}
+        options={({route}) => ({
+          title: 'Orders',
+        })}
+      />
+    </Drawer.Navigator>
+  );
+};
+
+export default ShopDrawerNav;
