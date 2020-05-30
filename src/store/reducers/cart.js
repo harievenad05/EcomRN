@@ -11,56 +11,59 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_TO_CART:
       const addedProduct = action.product;
-      const productPrice = addedProduct.price;
-      const productTitle = addedProduct.title;
+      const prodPrice = addedProduct.price;
+      const prodTitle = addedProduct.title;
       const productImage = addedProduct.imageUrl;
-      let cartItem;
+      let updatedOrNewCartItem;
       if (state.items[addedProduct.id]) {
         //already have that item
-        cartItem = new CartItem(
+        updatedOrNewCartItem = new CartItem(
           state.items[addedProduct.id].quantity + 1,
-          productPrice,
-          productTitle,
+          prodPrice,
+          prodTitle,
           productImage,
-          state.items[addedProduct.id].sum + productPrice,
+          state.items[addedProduct.id].sum + prodPrice,
         );
       } else {
-        cartItem = new CartItem(
+        updatedOrNewCartItem = new CartItem(
           1,
-          productPrice,
-          productTitle,
+          prodPrice,
+          prodTitle,
           productImage,
-          productPrice,
+          prodPrice,
         );
       }
 
       return {
         ...state, //redundant
-        items: {...state.items, [addedProduct.id]: cartItem},
-        totalAmount: state.totalAmount + productPrice,
+        items: {...state.items, [addedProduct.id]: updatedOrNewCartItem},
+        totalAmount: state.totalAmount + prodPrice,
         count: state.count + 1,
       };
     case REMOVE_FROM_CART:
       let updatedCartItem;
       const selectedCartItem = state.items[action.id];
       const currenQty = selectedCartItem.quantity;
+
       if (currenQty > 1) {
         updatedCartItem = new CartItem(
           selectedCartItem.quantity - 1,
           selectedCartItem.productPrice,
           selectedCartItem.productTitle,
           selectedCartItem.imageUrl,
-          selectedCartItem.sum - selectedCartItem.productPrice,
+          selectedCartItem.sum - selectedCartItem,
         );
         updatedCartItem = {...state.items, [action.id]: updatedCartItem};
       } else {
         updatedCartItem = {...state.items};
         delete updatedCartItem[action.id];
       }
+      let finalSum = state.totalAmount - selectedCartItem.productPrice;
+      let updatedSum = finalSum < 0 ? (finalSum *= -1) : finalSum;
       return {
         ...state,
         items: updatedCartItem,
-        totalAmount: state.totalAmount - selectedCartItem.productPrice,
+        totalAmount: updatedSum,
         count: state.count - 1,
       };
     default:

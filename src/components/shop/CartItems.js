@@ -24,7 +24,7 @@ const CartItems = (props) => {
       </View>
 
       <View style={styles.itemDataContainer}>
-        <Text style={styles.attributeTxt}>${props.amount.toFixed(2)}</Text>
+        <Text style={styles.attributeTxt}>${Math.abs(props.amount)}</Text>
         <TouchableOpacity
           onPress={props.removeItemAction}
           style={styles.trashStyle}>
