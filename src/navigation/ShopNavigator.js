@@ -2,11 +2,13 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createDrawerNavigator, DrawerItem} from '@react-navigation/drawer';
+import {useSelector} from 'react-redux';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+
 import ProductsOverviewScreen from '../screens/shop/ProductsOverviewScreen';
 import Colors from '../constants/Colors';
 import ProductDetailScreen from '../screens/shop/ProductDetailScreen';
 import HeaderRightBtn from '../components/UI/HeaderButton';
-import {useSelector} from 'react-redux';
 import CartScreen from '../screens/shop/CartScreen';
 import OrderScreen from '../screens/shop/OrdersScreen';
 import MenuBtn from '../components/UI/MenuBtn';
@@ -111,16 +113,30 @@ const ShopDrawerNav = (props) => {
       <Drawer.Screen
         name="ProductsStack"
         component={ProductsNavigator}
-        options={({route}) => ({
+        options={{
           title: 'Products',
-        })}
+          drawerIcon: ({focused, size}) => (
+            <Icon
+              name="shopping-basket"
+              size={size}
+              color={focused ? Colors.primaryColor : '#ccc'}
+            />
+          ),
+        }}
       />
       <Drawer.Screen
         name="OrderStack"
         component={ordersStackNav}
-        options={({route}) => ({
+        options={{
           title: 'Orders',
-        })}
+          drawerIcon: ({focused, size}) => (
+            <Icon
+              name="shopping-bag"
+              size={23}
+              color={focused ? Colors.primaryColor : '#ccc'}
+            />
+          ),
+        }}
       />
     </Drawer.Navigator>
   );
