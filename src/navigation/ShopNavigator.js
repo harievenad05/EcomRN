@@ -12,6 +12,7 @@ import HeaderRightBtn from '../components/UI/HeaderButton';
 import CartScreen from '../screens/shop/CartScreen';
 import OrderScreen from '../screens/shop/OrdersScreen';
 import MenuBtn from '../components/UI/MenuBtn';
+import UserProduct from '../screens/user/UserProduct';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -101,6 +102,27 @@ const ordersStackNav = (props) => {
   );
 };
 
+const AdminProductStackNav = (props) => {
+  return (
+    <Stack.Navigator screenOptions={defaultStackNavOptions}>
+      <Stack.Screen
+        name="UserProductScreen"
+        component={UserProduct}
+        options={({route, navigation}) => ({
+          title: 'Product',
+          headerLeft: () => (
+            <MenuBtn
+              menuClick={() => {
+                navigation.toggleDrawer();
+              }}
+            />
+          ),
+        })}
+      />
+    </Stack.Navigator>
+  );
+};
+
 const defaultDrawerNavOptions = {
   activeTintColor: Colors.primaryColor,
   // itemStyle: {marginTop: 10},
@@ -132,6 +154,20 @@ const ShopDrawerNav = (props) => {
           drawerIcon: ({focused, size}) => (
             <Icon
               name="shopping-bag"
+              size={23}
+              color={focused ? Colors.primaryColor : '#ccc'}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="AdminStack"
+        component={AdminProductStackNav}
+        options={{
+          title: 'Admin',
+          drawerIcon: ({focused, size}) => (
+            <Icon
+              name="user"
               size={23}
               color={focused ? Colors.primaryColor : '#ccc'}
             />

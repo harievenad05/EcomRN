@@ -15,7 +15,10 @@ const CartItems = (props) => {
     <TouchableOpacity
       style={styles.container}
       onPress={props.cartItemNavAction}>
-      <Image style={styles.imgStyle} source={{uri: props.imageURL}} />
+      {props.deletable && (
+        <Image style={styles.imgStyle} source={{uri: props.imageURL}} />
+      )}
+
       <View style={styles.itemDataContainer}>
         <Text style={styles.qtyTxt}>{props.quantity}</Text>
         <Text style={styles.attributeTxt} maxLength={5}>
@@ -25,15 +28,17 @@ const CartItems = (props) => {
 
       <View style={styles.itemDataContainer}>
         <Text style={styles.attributeTxt}>${Math.abs(props.amount)}</Text>
-        <TouchableOpacity
-          onPress={props.removeItemAction}
-          style={styles.trashStyle}>
-          <Ionicons
-            name={Platform.OS === 'android' ? 'md-trash' : 'ios-trash'}
-            size={25}
-            color="red"
-          />
-        </TouchableOpacity>
+        {props.deletable && (
+          <TouchableOpacity
+            onPress={props.removeItemAction}
+            style={styles.trashStyle}>
+            <Ionicons
+              name={Platform.OS === 'android' ? 'md-trash' : 'ios-trash'}
+              size={25}
+              color="red"
+            />
+          </TouchableOpacity>
+        )}
       </View>
     </TouchableOpacity>
   );
