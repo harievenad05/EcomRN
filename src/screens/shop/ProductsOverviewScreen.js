@@ -20,6 +20,8 @@ const ProductsOverviewScreen = (props) => {
             title: item.title,
           });
         }}
+        buttonOneTitle="View Details"
+        buttonTwoTitle="Add To Cart"
         onAddCartHandler={() => {
           dispatch(cartActions.addToCart(item));
         }}

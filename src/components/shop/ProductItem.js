@@ -32,12 +32,12 @@ const ProductItem = (props) => {
         <View style={styles.actionContainerStyle}>
           <Button
             color={Colors.primaryColor}
-            title="View Details"
+            title={props.buttonOneTitle}
             onPress={props.viewDetailsHandler}
           />
           <Button
             color={Colors.primaryColor}
-            title="To Cart"
+            title={props.buttonTwoTitle}
             onPress={props.onAddCartHandler}
           />
         </View>

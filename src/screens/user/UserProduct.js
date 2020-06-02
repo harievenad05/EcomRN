@@ -10,6 +10,8 @@ const UserProduct = (props) => {
         imageURL={item.imageUrl}
         title={item.title}
         price={item.price}
+        buttonOneTitle="Edit"
+        buttonTwoTitle="Delete"
         viewDetailsHandler={() => {}}
         onAddCartHandler={() => {}}
       />
