@@ -14,7 +14,7 @@ const UserProduct = (props) => {
         price={item.price}
         buttonOneTitle="Edit"
         buttonTwoTitle="Delete"
-        onLeftBtnClickHandler={() => {}}
+        onLeftBtnClickHandler={() => props.navigation.navigate('EditProductScreen')}
         onRightBtnClickHandler={() => createTwoButtonAlert(item.id)}
       />
     );

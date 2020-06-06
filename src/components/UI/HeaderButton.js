@@ -23,11 +23,11 @@ const HeaderRightBtn = (props) => {
             height: 20,
             marginLeft: -26,
             borderRadius: 10,
-            backgroundColor: Colors.primaryColor,
+            backgroundColor: Platform.OS === 'android' ? 'white' : Colors.primaryColor,
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-          <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 12}}>
+          <Text style={{color: Platform.OS === 'android'? Colors.primaryColor :'#fff', fontWeight: 'bold', fontSize: 12}}>
             {props.count}
           </Text>
         </View>

@@ -13,6 +13,7 @@ import CartScreen from '../screens/shop/CartScreen';
 import OrderScreen from '../screens/shop/OrdersScreen';
 import MenuBtn from '../components/UI/MenuBtn';
 import UserProduct from '../screens/user/UserProduct';
+import EditProductScreen from '../screens/user/EditProductScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -23,6 +24,8 @@ const defaultStackNavOptions = {
   headerStyle: {
     backgroundColor: Platform.OS === 'android' ? Colors.primaryColor : 'null',
   },
+
+  headerTitleAlign: 'center',
 };
 
 const ProductsNavigator = (props) => {
@@ -119,6 +122,14 @@ const AdminProductStackNav = (props) => {
           ),
         })}
       />
+      <Stack.Screen
+      name="EditProductScreen"
+      component={EditProductScreen}
+      options={({route, navigation}) => ({
+        title: 'Edit',
+
+      })}
+    />
     </Stack.Navigator>
   );
 };
@@ -140,7 +151,7 @@ const ShopDrawerNav = (props) => {
           drawerIcon: ({focused, size}) => (
             <Icon
               name="shopping-basket"
-              size={size}
+              size={23}
               color={focused ? Colors.primaryColor : '#ccc'}
             />
           ),
