@@ -73,7 +73,18 @@ export default (state = initialState, action) => {
       return initialState;
 
     case DELETE_PRODUCT:
-      return initialState;
+      if(!state.items[action.id]){
+        return state;
+      }
+      const updatedItems = {...state.items};
+      const itemTotal = state.items[action.id].sum;
+      delete updatedItems[action.id]
+      return {
+        ...state,
+        items: updatedItems,
+        totalAmount: state.totalAmount - itemTotal,
+        count: state.count - 1
+      };
 
     default:
       return state;

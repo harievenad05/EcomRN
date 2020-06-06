@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, FlatList} from 'react-native';
-import {useSelector} from 'react-redux';
+import {View, Text, StyleSheet, FlatList, Alert} from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
 import ProductItem from '../../components/shop/ProductItem';
+import * as productsAction from '../../store/actions/products';
 
 const UserProduct = (props) => {
+  const dispatch = useDispatch();
   const renderedItem = ({item}) => {
     return (
       <ProductItem
@@ -12,11 +14,28 @@ const UserProduct = (props) => {
         price={item.price}
         buttonOneTitle="Edit"
         buttonTwoTitle="Delete"
-        viewDetailsHandler={() => {}}
-        onAddCartHandler={() => {}}
+        onLeftBtnClickHandler={() => {}}
+        onRightBtnClickHandler={() => createTwoButtonAlert(item.id)}
       />
     );
   };
+
+  const createTwoButtonAlert = (id) =>
+    Alert.alert(
+      "Alert",
+      "Are you sure want to delete?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => dispatch(productsAction.deleteProduct(id)) }
+      ],
+      { cancelable: false }
+    );
+
+
 
   const userProducts = useSelector((state) => state.products.userProducts);
   return (

@@ -30,16 +30,20 @@ const ProductItem = (props) => {
           <Text style={styles.priceStyle}>${props.price.toFixed(2)}</Text>
         </View>
         <View style={styles.actionContainerStyle}>
-          <Button
-            color={Colors.primaryColor}
-            title={props.buttonOneTitle}
-            onPress={props.viewDetailsHandler}
-          />
-          <Button
-            color={Colors.primaryColor}
-            title={props.buttonTwoTitle}
-            onPress={props.onAddCartHandler}
-          />
+        <View style={[{ width: "35%", margin: 10 }]}>
+        <Button
+          color={Colors.primaryColor}
+          title={props.buttonOneTitle}
+          onPress={props.onLeftBtnClickHandler}
+        />
+        </View>
+        <View style={[{ width: "35%", margin: 10 }]}>
+        <Button
+          color={Colors.primaryColor}
+          title={props.buttonTwoTitle}
+          onPress={props.onRightBtnClickHandler}
+        />
+        </View>
         </View>
       </View>
     </View>

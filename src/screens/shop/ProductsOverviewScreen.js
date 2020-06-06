@@ -14,7 +14,7 @@ const ProductsOverviewScreen = (props) => {
         imageURL={item.imageUrl}
         title={item.title}
         price={item.price}
-        viewDetailsHandler={() => {
+        onLeftBtnClickHandler={() => {
           props.navigation.navigate('ProductsDetail', {
             productId: item.id,
             title: item.title,
@@ -22,7 +22,7 @@ const ProductsOverviewScreen = (props) => {
         }}
         buttonOneTitle="View Details"
         buttonTwoTitle="Add To Cart"
-        onAddCartHandler={() => {
+        onRightBtnClickHandler={() => {
           dispatch(cartActions.addToCart(item));
         }}
       />
