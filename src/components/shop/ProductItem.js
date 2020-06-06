@@ -27,23 +27,23 @@ const ProductItem = (props) => {
         </TouchableComp>
         <View style={styles.detailContainer}>
           <Text style={styles.titleStyle}>{props.title}</Text>
-          <Text style={styles.priceStyle}>${props.price.toFixed(2)}</Text>
+          <Text style={styles.priceStyle}>${props.price}</Text>
         </View>
         <View style={styles.actionContainerStyle}>
-        <View style={[{ width: "35%", margin: 10 }]}>
-        <Button
-          color={Colors.primaryColor}
-          title={props.buttonOneTitle}
-          onPress={props.onLeftBtnClickHandler}
-        />
-        </View>
-        <View style={[{ width: "35%", margin: 10 }]}>
-        <Button
-          color={Colors.primaryColor}
-          title={props.buttonTwoTitle}
-          onPress={props.onRightBtnClickHandler}
-        />
-        </View>
+          <View style={[{width: '35%', margin: 10}]}>
+            <Button
+              color={Colors.primaryColor}
+              title={props.buttonOneTitle}
+              onPress={props.onLeftBtnClickHandler}
+            />
+          </View>
+          <View style={[{width: '35%', margin: 10}]}>
+            <Button
+              color={Colors.primaryColor}
+              title={props.buttonTwoTitle}
+              onPress={props.onRightBtnClickHandler}
+            />
+          </View>
         </View>
       </View>
     </View>
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     height: 320,
     margin: 15,
-    overflow: Platform.OS === 'android' ? 'hidden' : null
+    overflow: Platform.OS === 'android' ? 'hidden' : null,
   },
   imageContainerStyle: {
     width: '100%',
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   imageStyle: {
     width: '100%',
     height: Platform.OS === 'android' ? '60%' : '100%',
-    borderBottomLeftRadius:  Platform.OS === 'android' ? 6 : null,
+    borderBottomLeftRadius: Platform.OS === 'android' ? 6 : null,
     borderBottomRightRadius: Platform.OS === 'android' ? 6 : null,
   },
   detailContainer: {

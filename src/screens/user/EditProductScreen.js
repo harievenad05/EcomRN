@@ -1,5 +1,5 @@
 //import liraries
-import React, {useState} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   View,
   ScrollView,
@@ -8,12 +8,14 @@ import {
   TextInput,
   Dimensions,
 } from 'react-native';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import Colors from '../../constants/Colors';
+import * as productAction from '../../store/actions/products';
 
 // create a component
 const EditProductScreen = ({route, navigation}) => {
   const {id} = route.params;
+  const dispatch = useDispatch();
   let editedProducts = null;
   if (id) {
     editedProducts = useSelector((state) =>
@@ -31,6 +33,27 @@ const EditProductScreen = ({route, navigation}) => {
   const [description, setDescription] = useState(
     editedProducts ? editedProducts.description : '',
   );
+
+  const submitHandler = useCallback(() => {
+    debugger;
+    if (editedProducts) {
+      dispatch(productAction.updateProduct(id, title, imageUrl, description));
+    } else {
+      dispatch(
+        productAction.createProduct(
+          title,
+          imageUrl,
+          parseFloat(price),
+          description,
+        ),
+      );
+    }
+  }, [dispatch, id, title, imageUrl, price, description]);
+
+  useEffect(() => {
+    navigation.setParams({submitAction: submitHandler});
+  }, [submitHandler]);
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -67,6 +90,7 @@ const EditProductScreen = ({route, navigation}) => {
             value={description}
             onChangeText={(text) => setDescription(text)}
             multiline={true}
+            autoCorrect={false}
           />
         </View>
       </View>

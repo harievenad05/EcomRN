@@ -106,7 +106,7 @@ const ordersStackNav = (props) => {
   );
 };
 
-const AdminProductStackNav = (props) => {
+const AdminProductStackNav = ({props}) => {
   const addBtnIcon = (navigation) => {
     return (
       <CommonIconButton
@@ -114,15 +114,6 @@ const AdminProductStackNav = (props) => {
         menuBtnClickAction={() =>
           navigation.navigate('EditProductScreen', {id: null})
         }
-      />
-    );
-  };
-
-  const editScreenRightBtn = () => {
-    return (
-      <CommonIconButton
-        iconName={'content-save'}
-        menuBtnClickAction={() => {}}
       />
     );
   };
@@ -149,7 +140,12 @@ const AdminProductStackNav = (props) => {
         component={EditProductScreen}
         options={({route, navigation}) => ({
           title: 'Edit',
-          headerRight: () => editScreenRightBtn(),
+          headerRight: () => (
+            <CommonIconButton
+              iconName={'content-save'}
+              menuBtnClickAction={() => route.params.submitAction()}
+            />
+          ),
         })}
       />
     </Stack.Navigator>
