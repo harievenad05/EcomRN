@@ -14,6 +14,7 @@ import OrderScreen from '../screens/shop/OrdersScreen';
 import MenuBtn from '../components/UI/MenuBtn';
 import UserProduct from '../screens/user/UserProduct';
 import EditProductScreen from '../screens/user/EditProductScreen';
+import AddButton from '../components/UI/AddButton';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -106,6 +107,17 @@ const ordersStackNav = (props) => {
 };
 
 const AdminProductStackNav = (props) => {
+
+  const addBtnIcon = (navigation) => {
+    console.log(navigation)
+    return (
+      <AddButton
+        iconName={'plus'}
+        menuBtnClickAction={() => navigation.navigate('EditProductScreen')}
+      />
+    );
+  };
+
   return (
     <Stack.Navigator screenOptions={defaultStackNavOptions}>
       <Stack.Screen
@@ -120,6 +132,7 @@ const AdminProductStackNav = (props) => {
               }}
             />
           ),
+          headerRight:() => addBtnIcon(navigation),
         })}
       />
       <Stack.Screen

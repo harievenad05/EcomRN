@@ -3,10 +3,12 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 // create a component
-const EditProductScreen = () => {
+const EditProductScreen = ({route, navigation}) => {
+  const {id} = route.params;
+
   return (
     <View style={styles.container}>
-      <Text>Edit Product Screen</Text>
+      <Text>Edit Product Screen {id}</Text>
     </View>
   );
 };
