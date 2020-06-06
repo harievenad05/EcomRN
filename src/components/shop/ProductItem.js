@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     height: 320,
     margin: 15,
+    overflow: Platform.OS === 'android' ? 'hidden' : null
   },
   imageContainerStyle: {
     width: '100%',
@@ -67,7 +68,9 @@ const styles = StyleSheet.create({
   },
   imageStyle: {
     width: '100%',
-    height: '100%',
+    height: Platform.OS === 'android' ? '60%' : '100%',
+    borderBottomLeftRadius:  Platform.OS === 'android' ? 6 : null,
+    borderBottomRightRadius: Platform.OS === 'android' ? 6 : null,
   },
   detailContainer: {
     alignItems: 'center',
