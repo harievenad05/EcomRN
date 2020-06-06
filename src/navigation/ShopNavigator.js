@@ -14,7 +14,7 @@ import OrderScreen from '../screens/shop/OrdersScreen';
 import MenuBtn from '../components/UI/MenuBtn';
 import UserProduct from '../screens/user/UserProduct';
 import EditProductScreen from '../screens/user/EditProductScreen';
-import AddButton from '../components/UI/AddButton';
+import CommonIconButton from '../components/UI/AddButton';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -107,13 +107,22 @@ const ordersStackNav = (props) => {
 };
 
 const AdminProductStackNav = (props) => {
-
   const addBtnIcon = (navigation) => {
-    console.log(navigation)
     return (
-      <AddButton
+      <CommonIconButton
         iconName={'plus'}
-        menuBtnClickAction={() => navigation.navigate('EditProductScreen')}
+        menuBtnClickAction={() =>
+          navigation.navigate('EditProductScreen', {id: null})
+        }
+      />
+    );
+  };
+
+  const editScreenRightBtn = () => {
+    return (
+      <CommonIconButton
+        iconName={'content-save'}
+        menuBtnClickAction={() => {}}
       />
     );
   };
@@ -132,17 +141,17 @@ const AdminProductStackNav = (props) => {
               }}
             />
           ),
-          headerRight:() => addBtnIcon(navigation),
+          headerRight: () => addBtnIcon(navigation),
         })}
       />
       <Stack.Screen
-      name="EditProductScreen"
-      component={EditProductScreen}
-      options={({route, navigation}) => ({
-        title: 'Edit',
-
-      })}
-    />
+        name="EditProductScreen"
+        component={EditProductScreen}
+        options={({route, navigation}) => ({
+          title: 'Edit',
+          headerRight: () => editScreenRightBtn(),
+        })}
+      />
     </Stack.Navigator>
   );
 };

@@ -1,16 +1,17 @@
-import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { IconButton } from 'react-native-paper';
+import React, {Component} from 'react';
+import {View, Text, StyleSheet} from 'react-native';
+import {IconButton} from 'react-native-paper';
+import Colors from '../../constants/Colors';
 
-const AddButton = (props) => {
+const CommonIconButton = (props) => {
   return (
-    <View >
-    <IconButton
-      icon={props.iconName}
-      color={Platform.OS === 'android' ? 'white' : Colors.primaryColor}
-      size={25}
-      onPress={props.menuBtnClickAction}
-  />
+    <View>
+      <IconButton
+        icon={props.iconName}
+        color={Platform.OS === 'android' ? 'white' : Colors.primaryColor}
+        size={25}
+        onPress={props.menuBtnClickAction}
+      />
     </View>
   );
 };
@@ -23,4 +24,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddButton;
+export default CommonIconButton;
