@@ -7,23 +7,47 @@ import {
   StyleSheet,
   TextInput,
   Dimensions,
-  Alert
+  Alert,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import Colors from '../../constants/Colors';
 import * as productAction from '../../store/actions/products';
 
-const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE'
+const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
 const formReducer = (state, action) => {
-  if(action.type === FORM_INPUT_UPDATE){
-
+  if (action.type === FORM_INPUT_UPDATE) {
+    const updatedValues = {
+      ...state.inputValues,
+      [action.input]: action.value,
+    };
+    const updatedValidities = {
+      ...state.inputValidities,
+      [action.input]: action.isValid,
+    };
+    let updatedFormIsValid = true;
+    for (const key in updatedValidities) {
+      updatedFormIsValid = updatedFormIsValid && updatedValidities[key];
+    }
+    return {
+      formIsValid: updatedFormIsValid,
+      inputValues: updatedValues,
+      inputValidities: updatedValidities,
+    };
   }
-}
+  return state;
+};
 
 const EditProductScreen = ({route, navigation}) => {
   const {id} = route.params;
   const dispatch = useDispatch();
+
+  let editedProducts = null;
+  if (id) {
+    editedProducts = useSelector((state) =>
+      state.products.userProducts.find((prod) => prod.id === id),
+    );
+  }
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
@@ -41,47 +65,49 @@ const EditProductScreen = ({route, navigation}) => {
     formIsValid: editedProducts ? true : false,
   });
 
-  let editedProducts = null;
-  if (id) {
-    editedProducts = useSelector((state) =>
-      state.products.userProducts.find((prod) => prod.id === id),
-    );
-  }
-
   const submitHandler = useCallback(() => {
-    if(!isTitleValid){
-      Alert.alert('Title', 'Title should not be empty');
+    if (!formState.formIsValid) {
+      Alert.alert('Error', 'Some error in the form');
       return;
     }
     debugger;
     if (editedProducts) {
-      dispatch(productAction.updateProduct(id, title, imageUrl, description));
+      dispatch(
+        productAction.updateProduct(
+          id,
+          formState.inputValues.title,
+          formState.inputValues.imageUrl,
+          formState.inputValues.description,
+        ),
+      );
     } else {
       dispatch(
         productAction.createProduct(
-          title,
-          imageUrl,
-          parseFloat(price),
-          description,
+          formState.inputValues.title,
+          formState.inputValues.imageUrl,
+          parseFloat(formState.inputValues.price),
+          formState.inputValues.description,
         ),
       );
     }
-  }, [dispatch, id, title, imageUrl, price, description, isTitleValid]);
+  }, [dispatch, id, formState]);
 
   useEffect(() => {
     navigation.setParams({submitAction: submitHandler});
   }, [submitHandler]);
 
   const textChangeHandler = (inputIdentifier, text) => {
-
     let isValid = false;
-    if(text.trim().length > 0){
+    if (text.trim().length > 0) {
       isValid = true;
-    } else {
-
     }
-    dispatchFormState({ type: FORM_INPUT_UPDATE, value: text, isValid: isValid, input: inputIdentifier})
-  }
+    dispatchFormState({
+      type: FORM_INPUT_UPDATE,
+      value: text,
+      isValid: isValid,
+      input: inputIdentifier,
+    });
+  };
 
   return (
     <ScrollView>
@@ -89,20 +115,21 @@ const EditProductScreen = ({route, navigation}) => {
         <View style={{...styles.inputContainer, marginTop: 30}}>
           <Text style={styles.inputTitleStyle}>Title:</Text>
           <TextInput
-            value={title}
+            value={formState.inputValues.title}
             style={styles.txtInputStyle}
-            onChangeText={textChangeHandler.bind(this, 'title')}
-            autoCapitalize='sentences'
-            onEndEditing={() => console.log('onEnd Editing')}
+            onChangeText={(text) => textChangeHandler('title', text)}
+            autoCapitalize="sentences"
           />
-          {!isTitleValid && <Text>Please input a valid title</Text>}
+          {!formState.inputValues.title && (
+            <Text>Please input a valid title</Text>
+          )}
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.inputTitleStyle}>Image Url:</Text>
           <TextInput
             style={styles.txtInputStyle}
-            value={imageUrl}
-            onChangeText={textChangeHandler.bind(this, 'imageUrl')}
+            value={formState.inputValues.imageUrl}
+            onChangeText={(text) => textChangeHandler('imageUrl', text)}
           />
         </View>
         {editedProducts ? null : (
@@ -110,9 +137,9 @@ const EditProductScreen = ({route, navigation}) => {
             <Text style={styles.inputTitleStyle}>Price:</Text>
             <TextInput
               style={styles.txtInputStyle}
-              value={price}
-              onChangeText={textChangeHandler.bind(this, 'price')}
-              keyboardType='decimal-pad'
+              value={formState.inputValues.price}
+              onChangeText={(text) => textChangeHandler('price', text)}
+              keyboardType="decimal-pad"
             />
           </View>
         )}
@@ -120,8 +147,8 @@ const EditProductScreen = ({route, navigation}) => {
           <Text style={styles.inputTitleStyle}>Description:</Text>
           <TextInput
             style={styles.descInputTxtStyle}
-            value={description}
-            onChangeText={textChangeHandler.bind(this, 'description')}
+            value={formState.inputValues.description}
+            onChangeText={(text) => textChangeHandler('description', text)}
             multiline={true}
             autoCorrect={false}
           />
@@ -158,7 +185,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     borderColor: Colors.accentColor,
     borderWidth: 1,
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
   },
   txtInputStyle: {
     marginTop: 10,
