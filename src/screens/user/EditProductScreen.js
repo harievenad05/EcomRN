@@ -1,5 +1,5 @@
 //import liraries
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useEffect, useCallback, useReducer} from 'react';
 import {
   View,
   ScrollView,
@@ -7,15 +7,40 @@ import {
   StyleSheet,
   TextInput,
   Dimensions,
+  Alert
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import Colors from '../../constants/Colors';
 import * as productAction from '../../store/actions/products';
 
-// create a component
+const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE'
+
+const formReducer = (state, action) => {
+  if(action.type === FORM_INPUT_UPDATE){
+
+  }
+}
+
 const EditProductScreen = ({route, navigation}) => {
   const {id} = route.params;
   const dispatch = useDispatch();
+
+  const [formState, dispatchFormState] = useReducer(formReducer, {
+    inputValues: {
+      title: editedProducts ? editedProducts.title : '',
+      imageUrl: editedProducts ? editedProducts.imageUrl : '',
+      price: '',
+      description: editedProducts ? editedProducts.description : '',
+    },
+    inputValidities: {
+      title: editedProducts ? true : false,
+      imageUrl: editedProducts ? true : false,
+      price: editedProducts ? true : false,
+      description: editedProducts ? true : false,
+    },
+    formIsValid: editedProducts ? true : false,
+  });
+
   let editedProducts = null;
   if (id) {
     editedProducts = useSelector((state) =>
@@ -23,18 +48,11 @@ const EditProductScreen = ({route, navigation}) => {
     );
   }
 
-  const [title, setTitle] = useState(
-    editedProducts ? editedProducts.title : '',
-  );
-  const [imageUrl, setImageUrl] = useState(
-    editedProducts ? editedProducts.imageUrl : '',
-  );
-  const [price, setPrice] = useState('');
-  const [description, setDescription] = useState(
-    editedProducts ? editedProducts.description : '',
-  );
-
   const submitHandler = useCallback(() => {
+    if(!isTitleValid){
+      Alert.alert('Title', 'Title should not be empty');
+      return;
+    }
     debugger;
     if (editedProducts) {
       dispatch(productAction.updateProduct(id, title, imageUrl, description));
@@ -48,11 +66,22 @@ const EditProductScreen = ({route, navigation}) => {
         ),
       );
     }
-  }, [dispatch, id, title, imageUrl, price, description]);
+  }, [dispatch, id, title, imageUrl, price, description, isTitleValid]);
 
   useEffect(() => {
     navigation.setParams({submitAction: submitHandler});
   }, [submitHandler]);
+
+  const textChangeHandler = (inputIdentifier, text) => {
+
+    let isValid = false;
+    if(text.trim().length > 0){
+      isValid = true;
+    } else {
+
+    }
+    dispatchFormState({ type: FORM_INPUT_UPDATE, value: text, isValid: isValid, input: inputIdentifier})
+  }
 
   return (
     <ScrollView>
@@ -62,15 +91,18 @@ const EditProductScreen = ({route, navigation}) => {
           <TextInput
             value={title}
             style={styles.txtInputStyle}
-            onChangeText={(text) => setTitle(text)}
+            onChangeText={textChangeHandler.bind(this, 'title')}
+            autoCapitalize='sentences'
+            onEndEditing={() => console.log('onEnd Editing')}
           />
+          {!isTitleValid && <Text>Please input a valid title</Text>}
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.inputTitleStyle}>Image Url:</Text>
           <TextInput
             style={styles.txtInputStyle}
             value={imageUrl}
-            onChangeText={(text) => setImageUrl(text)}
+            onChangeText={textChangeHandler.bind(this, 'imageUrl')}
           />
         </View>
         {editedProducts ? null : (
@@ -79,7 +111,8 @@ const EditProductScreen = ({route, navigation}) => {
             <TextInput
               style={styles.txtInputStyle}
               value={price}
-              onChangeText={(text) => setPrice(text)}
+              onChangeText={textChangeHandler.bind(this, 'price')}
+              keyboardType='decimal-pad'
             />
           </View>
         )}
@@ -88,7 +121,7 @@ const EditProductScreen = ({route, navigation}) => {
           <TextInput
             style={styles.descInputTxtStyle}
             value={description}
-            onChangeText={(text) => setDescription(text)}
+            onChangeText={textChangeHandler.bind(this, 'description')}
             multiline={true}
             autoCorrect={false}
           />
@@ -125,6 +158,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     borderColor: Colors.accentColor,
     borderWidth: 1,
+    justifyContent: 'flex-start'
   },
   txtInputStyle: {
     marginTop: 10,
