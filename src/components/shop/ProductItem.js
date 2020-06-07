@@ -10,6 +10,7 @@ import {
   Platform,
 } from 'react-native';
 import Colors from '../../constants/Colors';
+import Card from '../UI/Card';
 
 const ProductItem = (props) => {
   let TouchableComp = TouchableOpacity;
@@ -18,7 +19,7 @@ const ProductItem = (props) => {
     : null;
   return (
     <View style={{flex: 1, width: '100%'}}>
-      <View style={styles.container}>
+      <Card style={styles.container}>
         <TouchableComp
           style={styles.imageContainerStyle}
           onPress={props.viewDetailsHandler}
@@ -45,20 +46,13 @@ const ProductItem = (props) => {
             />
           </View>
         </View>
-      </View>
+      </Card>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    shadowColor: 'black',
-    shadowOpacity: 0.26,
-    shadowOffset: {width: 0, height: 2},
-    shadowRadius: 8,
-    elevation: 5,
-    borderRadius: 6,
-    backgroundColor: 'white',
     height: 320,
     margin: 15,
     overflow: Platform.OS === 'android' ? 'hidden' : null,
